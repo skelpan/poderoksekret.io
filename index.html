@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Улыбнись, Доктор! С Днём Рождения!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Индикатор прохождения -->
+    <div class="progress-indicator">
+        <div class="step active" data-step="1">1</div>
+        <div class="step" data-step="2">2</div>
+        <div class="step" data-step="3">3</div>
+        <div class="step" data-step="4">4</div>
+        <div class="step" data-step="5">5</div>
+    </div>
+
+    <!-- Экран 1: Главный экран -->
+    <div id="screen1" class="screen active">
+        <div class="container">
+            <div class="tooth-animation">
+                <div class="tooth">🦷</div>
+                <div class="lamp">💡</div>
+            </div>
+            <h1>С Днём Рождения,<br><span class="highlight">Доктор Улыбка!</span></h1>
+            <button class="btn-start" onclick="nextScreen(2)">
+                Начать праздничный осмотр 😄
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран 2: Диагностика -->
+    <div id="screen2" class="screen">
+        <div class="container">
+            <h2>Диагностика Улыбки</h2>
+            <p class="subtitle">Проверь каждый зуб на счастливость!</p>
+            
+            <div class="smile-container">
+                <div class="tooth-to-check" onclick="diagnoseTooth(this)">😊</div>
+                <div class="tooth-to-check" onclick="diagnoseTooth(this)">😁</div>
+                <div class="tooth-to-check" onclick="diagnoseTooth(this)">😄</div>
+                <div class="tooth-to-check" onclick="diagnoseTooth(this)">🤗</div>
+                <div class="tooth-to-check" onclick="diagnoseTooth(this)">🥳</div>
+            </div>
+            
+            <div id="diagnosisMessage" class="message"></div>
+            
+            <button class="btn-next" onclick="nextScreen(3)" disabled id="btnScreen2">
+                Продолжить лечение →
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран 3: Чистка зубов -->
+    <div id="screen3" class="screen">
+        <div class="container">
+            <h2>План лечения счастьем</h2>
+            <p class="subtitle">Почисти зубы до блеска!</p>
+            
+            <div class="cleaning-instructions">
+                <div class="instruction">
+                    <span class="instruction-icon">🖱️</span>
+                    <span>Мышка - зажать и провести</span>
+                </div>
+                <div class="instruction">
+                    <span class="instruction-icon">👆</span>
+                    <span>Палец - провести по экрану</span>
+                </div>
+            </div>
+            
+            <div class="cleaning-game">
+                <div class="canvas-container">
+                    <canvas id="toothCanvas"></canvas>
+                </div>
+                <div class="progress-container">
+                    <div id="cleanProgress" class="progress-bar"></div>
+                    <span id="progressText">0%</span>
+                </div>
+                <p id="cleanStatus">Проведи пальцем или мышкой по зубу чтобы почистить его</p>
+            </div>
+            
+            <button class="btn-next" onclick="nextScreen(4)" disabled id="btnScreen3">
+                Получить поздравление →
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран 4: Поздравление от семьи -->
+    <div id="screen4" class="screen">
+        <div class="container">
+            <h2>Поздравление от семьи</h2>
+            
+            <div class="family-message">
+                <div class="photo-placeholder">
+                    👨‍⚕️💙
+                </div>
+                <div class="message-text">
+                    <p>"Дорогой папа! Мы гордимся тобой и твоей работой! </p>
+                    <p>Пусть твои пациенты всегда улыбаются, а ты — вместе с ними! </p>
+                    <p>Ты наш герой! Любим тебя!"</p>
+                    <p class="signature">— skelpan ❤️</p>
+                </div>
+            </div>
+            
+            <button class="btn-next" onclick="nextScreen(5)">
+                Получить подарок 🎁
+            </button>
+        </div>
+    </div>
+
+    <!-- Экран 5: Подарок -->
+    <div id="screen5" class="screen">
+        <div class="container">
+            <div class="fireworks-container" id="fireworksContainer"></div>
+            
+            <h2>Твой подарок ждёт!</h2>
+            
+            <div class="gift-section">
+                <div class="gift-box" onclick="toggleVoiceInstructions()">
+                    <div class="box">🎁</div>
+                    <p class="tap-hint">Нажми для голосовой разблокировки</p>
+                </div>
+                
+                <!-- Голосовые инструкции -->
+                <div id="voiceInstructions" class="voice-instructions hidden">
+                    <div class="voice-icon" id="voiceIcon">🎤</div>
+                    <p id="voiceStatus">Нажми на микрофон и скажи "ПОДАРОК"</p>
+                    <div class="voice-controls">
+                        <button class="btn-voice" id="voiceButton" onclick="startVoiceRecognition()">
+                            Включить микрофон
+                        </button>
+                        <button class="btn-alternative" onclick="openGiftWithCode()">
+                            Ввести код вручную
+                        </button>
+                    </div>
+                    <p class="voice-hint">Скажи волшебное слово, чтобы открыть подарок!</p>
+                    
+                    <!-- Поле для ручного ввода кода -->
+                    <div id="manualInput" class="manual-input hidden">
+                        <input type="text" id="codeInput" placeholder="Введите слово ПОДАРОК" maxlength="10">
+                        <button class="btn-submit" onclick="checkManualCode()">Открыть подарок</button>
+                    </div>
+                </div>
+                
+                <!-- Содержимое подарка -->
+                <div id="giftContent" class="gift-content hidden">
+                    <div class="qr-code">
+                        <img src="qr-code.jpg" alt="QR-код подарка Ozon" class="qr-image">
+                    </div>
+                    <p class="gift-text">Отсканируй QR-код чтобы забрать свой подарок на Ozon!</p>
+                    <p class="love">С любовью — skelpan ❤️</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
